@@ -1,5 +1,4 @@
 
-
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -7,96 +6,139 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333333;
-    background-color: #f8f9fa;
-}
-
-table, th, td {
-  border: 1px solid black;
-}
-
-
-a {
-    text-decoration: none;
-    color: #2a52be;
-    transition: color 0.3s ease;
-}
-
-a:hover {
-    color: #1a3680;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-muted);
+    line-height: 1.7;
 }
 
 /* ==========================================================================
-   2. LAYOUT E STRUTTURA (Header, Nav, Main, Footer)
+   3. INTESTAZIONE (Header & Navigation)
    ========================================================================== */
-
-/* Intestazione */
 header {
-    background-color: #1e293b;
-    color: #ffffff;
-    padding: 1rem 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem 2rem;
+    position: sticky; /* Rimane fisso in alto mentre scorri la pagina */
+    top: 0;
+    z-index: 100;
 }
 
 header h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.05em;
+    margin-bottom: 1.2rem;
+    text-align: center;
 }
 
-/* Menu di navigazione */
 nav ul {
     list-style: none;
     display: flex;
-    gap: 1.5rem;
+    justify-content: center;
+    gap: 1rem;
 }
 
 nav a {
-    color: #cbd5e1;
+    color: var(--text-muted);
     font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: var(--transition);
 }
 
+/* Effetto evidenziatore moderno sui link del menu */
 nav a:hover {
-    color: #ffffff;
+    color: var(--primary);
+    background-color: #f0f0ff;
 }
 
-/* Contenuto Principale */
+/* ==========================================================================
+   4. CONTENUTO PRINCIPALE (Main & Cards)
+   ========================================================================== */
 main {
-    max-width: 900px;
-    margin: 2rem auto;
+    max-width: 800px;
+    margin: 3rem auto;
     padding: 0 1.5rem;
 }
 
-/* Sezioni */
 section {
-    background: #ffffff;
-    padding: 2rem;
+    background-color: var(--bg-card);
+    padding: 2.5rem;
     margin-bottom: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    /* Ombra morbida stile Apple/Stripe */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
 }
 
+/* Effetto interattivo: la sezione si solleva leggermente quando ci passi sopra */
+section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+}
+
+/* Stile ricercato per i titoli delle sezioni */
 section h2 {
-    color: #1e293b;
+    color: var(--text-dark);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
     margin-bottom: 1rem;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 0.5rem;
+    display: inline-block;
+    position: relative;
+}
+
+/* Una linea colorata di accento sotto al titolo */
+section h2::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background-color: var(--primary);
+    border-radius: 2px;
+    margin-top: 6px;
 }
 
 section p {
-    color: #475569;
+    font-size: 1.05rem;
+    color: var(--text-muted);
 }
 
-/* Piè di pagina */
+/* ==========================================================================
+   5. PIÈ DI PAGINA (Footer)
+   ========================================================================== */
 footer {
-    background-color: #0f172a;
-    color: #94a3b8;
     text-align: center;
-    padding: 1.5rem;
+    padding: 2.5rem 1.5rem;
+    margin-top: 5rem;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-card);
     font-size: 0.9rem;
-    margin-top: 4rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   6. RESPONSIVITÀ (Desktop Optimization)
+   ========================================================================== */
+@media (min-width: 768px) {
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 4rem;
+    }
+
+    header h1 {
+        margin-bottom: 0;
+        font-size: 1.7rem;
+    }
+    
+    nav ul {
+        gap: 0.5rem;
+    }
 }
