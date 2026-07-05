@@ -1,0 +1,176 @@
+
+/* ==========================================
+   1. RESET E STILI GENERALI 
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   2. HEADER (Con Immagine di Sfondo)
+   ========================================== */
+header {
+    /* Crea una sfumatura scura sopra l'immagine per rendere il testo leggibile */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                      url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Effetto parallasse durante lo scroll */
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* ==========================================
+   3. NAVIGAZIONE (Barra fissa in alto)
+   ========================================== */
+nav {
+    background-color: #2c3e50;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Permette di andare a capo sui telefoni */
+}
+
+nav ul li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 15px 25px;
+    font-weight: 600;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* Effetto al passaggio del mouse sul menu */
+nav ul li a:hover {
+    background-color: #1abc9c;
+    color: #2c3e50;
+}
+
+/* ==========================================
+   4. STRUTTURA CONTENUTI E SEZIONI
+   ========================================== */
+main {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.category-section {
+    margin-bottom: 60px;
+    scroll-margin-top: 70px; /* Evita che il menu fisso copra i titoli quando usi le ancore */
+}
+
+.category-title {
+    font-size: 2rem;
+    color: #2c3e50;
+    border-left: 5px solid #1abc9c; /* Linea verticale colorata a sinistra del titolo */
+    padding-left: 15px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+/* ==========================================
+   5. GRIGLIA RESPONSIVA E CARD ANIMALI
+   ========================================== */
+.image-grid {
+    display: grid;
+    /* Crea colonne dinamiche: minimo 300px, massimo si spartiscono lo spazio */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.animal-card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden; /* Taglia l'immagine se supera i bordi arrotondati della card */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Effetto sollevamento quando si passa sopra la card */
+.animal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.animal-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover; /* Mantiene le proporzioni dell'immagine ritagliandola a misura */
+    display: block;
+}
+
+.animal-info {
+    padding: 20px;
+}
+
+.animal-info h3 {
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+.animal-info p {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* ==========================================
+   6. BOTTONI E FOOTER
+   ========================================== */
+.btn-view {
+    display: inline-block;
+    background-color: #1abc9c;
+    color: white;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-view:hover {
+    background-color: #16a085;
+}
+
+footer {
+    background-color: #2c3e50;
+    color: #bdc3c7;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 80px;
+}
+
+footer p {
+    font-size: 0.9rem;
+}

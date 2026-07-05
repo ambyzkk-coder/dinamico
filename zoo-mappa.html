@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoo del Mondo - Mappa Interattiva</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗺️</text></svg>">
+    <link rel="stylesheet" href="CLICCA.css">
+    <style>
+        .map-header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1534567153574-2b12153a0f59?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .map-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .map-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 20px auto 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-box button {
+            padding: 12px 25px;
+            background-color: #1abc9c;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-box button:hover {
+            background-color: #16a085;
+        }
+
+        .full-map-container {
+            width: 100%;
+            height: calc(100vh - 250px);
+            min-height: 500px;
+        }
+
+        .full-map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .legend {
+            background-color: white;
+            padding: 15px 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .legend-icon {
+            font-size: 1.2rem;
+        }
+
+        .zoo-stats {
+            background-color: #f8f9fa;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: #1abc9c;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: #2c3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #1a252f;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="map-header">
+        <h1>🗺️ Zoo del Mondo</h1>
+        <p>Esplora gli zoo, parchi safari e riserve naturalistiche in tutto il pianeta</p>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Cerca una città o uno zoo...">
+            <button onclick="searchOnMap()">Cerca</button>
+        </div>
+    </header>
+
+    <div class="legend">
+        <div class="legend-item">
+            <span class="legend-icon">🦁</span>
+            <span>Zoo tradizionali</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-icon">🦒</span>
+            <span>Parchi Safari</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-icon">🐬</span>
+            <span>Acquari</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-icon">🌿</span>
+            <span>Riserve Naturalistiche</span>
+        </div>
+    </div>
+
+    <div class="full-map-container">
+        <iframe 
+            id="googleMap"
+            src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d31771885.03874294!2d-15.56385978940867!3d35.68890465121094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1szoos!5e0!3m2!1sit!2sit!4v1704537600000!5m2!1sit!2sit"
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+
+    <section class="zoo-stats">
+        <h2 style="margin-bottom: 25px; color: #2c3e50;">Zoo Famosi nel Mondo</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>🐘</h3>
+                <p><strong>Berlin Zoo</strong><br>Berlino, Germania</p>
+                <a href="https://www.google.com/maps/place/Zoologischer+Garten+Berlin/@52.5066,13.3345,15z" target="_blank" class="btn-view" style="margin-top: 10px;">Vedi mappa</a>
+            </div>
+            <div class="stat-card">
+                <h3>🦁</h3>
+                <p><strong>San Diego Zoo</strong><br>California, USA</p>
+                <a href="https://www.google.com/maps/place/San+Diego+Zoo/@32.7353,-117.1490,15z" target="_blank" class="btn-view" style="margin-top: 10px;">Vedi mappa</a>
+            </div>
+            <div class="stat-card">
+                <h3>🦒</h3>
+                <p><strong>Singapore Zoo</strong><br>Singapore</p>
+                <a href="https://www.google.com/maps/place/Singapore+Zoo/@1.4043,103.7930,15z" target="_blank" class="btn-view" style="margin-top: 10px;">Vedi mappa</a>
+            </div>
+        </div>
+    </section>
+
+    <a href="CLICCA.html" class="back-link">← Torna alla Galleria Animali</a>
+
+    <footer>
+        <p>&copy; 2026 FaunaView. Mappa fornita da Google Maps.</p>
+    </footer>
+
+    <script>
+        function searchOnMap() {
+            var query = document.getElementById('searchInput').value;
+            if(query.trim() !== '') {
+                var searchUrl = 'https://www.google.com/maps/search/' + encodeURIComponent(query + ' zoo') + '/';
+                window.open(searchUrl, '_blank');
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                searchOnMap();
+            }
+        });
+    </script>
+
+</body>
+</html>
