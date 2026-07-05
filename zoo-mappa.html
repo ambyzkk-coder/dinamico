@@ -6,6 +6,7 @@
     <title>Zoo del Mondo - Mappa Interattiva</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗺️</text></svg>">
     <link rel="stylesheet" href="CLICCA.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         .map-header {
             background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1534567153574-2b12153a0f59?auto=format&fit=crop&w=1920&q=80');
@@ -13,7 +14,7 @@
             background-position: center;
             color: white;
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
         }
 
         .map-header h1 {
@@ -26,101 +27,126 @@
             opacity: 0.9;
         }
 
-        .search-box {
-            max-width: 600px;
-            margin: 20px auto 0;
+        .filter-bar {
+            background-color: #2c3e50;
+            padding: 15px 20px;
             display: flex;
+            justify-content: center;
             gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
         }
 
-        .search-box input {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .search-box button {
-            padding: 12px 25px;
+        .filter-bar button {
+            padding: 10px 20px;
             background-color: #1abc9c;
             color: white;
             border: none;
             border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .search-box button:hover {
-            background-color: #16a085;
-        }
-
-        .full-map-container {
-            width: 100%;
-            height: calc(100vh - 250px);
-            min-height: 500px;
-        }
-
-        .full-map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .legend {
-            background-color: white;
-            padding: 15px 20px;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
             font-size: 0.9rem;
-            color: #333;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .legend-icon {
-            font-size: 1.2rem;
+        .filter-bar button:hover {
+            background-color: #16a085;
+            transform: scale(1.05);
         }
 
-        .zoo-stats {
+        .filter-bar button.active {
+            background-color: #e74c3c;
+        }
+
+        .filter-bar input {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            width: 250px;
+            outline: none;
+        }
+
+        #map {
+            width: 100%;
+            height: 600px;
+            z-index: 1;
+        }
+
+        .zoo-list {
             background-color: #f8f9fa;
             padding: 30px 20px;
-            text-align: center;
         }
 
-        .stats-grid {
+        .zoo-list h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        .zoo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
-            max-width: 800px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        .stat-card {
+        .zoo-card {
             background-color: white;
-            padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .stat-card h3 {
-            font-size: 2rem;
-            color: #1abc9c;
+        .zoo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .zoo-card h3 {
+            color: #2c3e50;
             margin-bottom: 5px;
+            font-size: 1.1rem;
         }
 
-        .stat-card p {
-            color: #666;
+        .zoo-card .country {
+            color: #1abc9c;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .zoo-card .type {
+            display: inline-block;
+            background-color: #e8f8f5;
+            color: #1abc9c;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+        }
+
+        .zoo-card .btn-view {
+            display: inline-block;
+            background-color: #1abc9c;
+            color: white;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: background 0.3s;
+        }
+
+        .zoo-card .btn-view:hover {
+            background-color: #16a085;
+        }
+
+        .stats-bar {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
             font-size: 0.9rem;
         }
 
@@ -139,20 +165,34 @@
             background-color: #1a252f;
         }
 
-        .btn-view {
+        .leaflet-popup-content h4 {
+            margin: 0 0 5px 0;
+            color: #2c3e50;
+        }
+
+        .leaflet-popup-content p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .leaflet-popup-content a {
             display: inline-block;
             background-color: #1abc9c;
             color: white;
             text-decoration: none;
-            padding: 8px 18px;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: background 0.2s;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-top: 5px;
         }
 
-        .btn-view:hover {
-            background-color: #16a085;
+        .count-display {
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -161,59 +201,28 @@
     <header class="map-header">
         <h1>🗺️ Zoo del Mondo</h1>
         <p>Esplora gli zoo, parchi safari e riserve naturalistiche in tutto il pianeta</p>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Cerca una città o uno zoo...">
-            <button onclick="searchOnMap()">Cerca</button>
-        </div>
     </header>
 
-    <div class="legend">
-        <div class="legend-item">
-            <span class="legend-icon">🦁</span>
-            <span>Zoo tradizionali</span>
-        </div>
-        <div class="legend-item">
-            <span class="legend-icon">🦒</span>
-            <span>Parchi Safari</span>
-        </div>
-        <div class="legend-item">
-            <span class="legend-icon">🐬</span>
-            <span>Acquari</span>
-        </div>
-        <div class="legend-item">
-            <span class="legend-icon">🌿</span>
-            <span>Riserve Naturalistiche</span>
-        </div>
+    <div class="filter-bar">
+        <button onclick="filterZoos('all')" class="active" id="btn-all">🌍 Tutti</button>
+        <button onclick="filterZoos('europa')" id="btn-europa">🇪🇺 Europa</button>
+        <button onclick="filterZoos('italia')" id="btn-italia">🇮🇹 Italia</button>
+        <button onclick="filterZoos('germania')" id="btn-germania">🇩🇪 Germania</button>
+        <button onclick="filterZoos('francia')" id="btn-francia">🇫🇷 Francia</button>
+        <button onclick="filterZoos('uk')" id="btn-uk">🇬🇧 UK</button>
+        <button onclick="filterZoos('spagna')" id="btn-spagna">🇪🇸 Spagna</button>
+        <input type="text" id="searchInput" placeholder="🔍 Cerca zoo..." oninput="searchZoos()">
     </div>
 
-    <div class="full-map-container">
-        <iframe 
-            id="googleMap"
-            src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d31771885.03874294!2d-15.56385978940867!3d35.68890465121094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1szoos!5e0!3m2!1sit!2sit!4v1704537600000!5m2!1sit!2sit"
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
+    <div class="stats-bar">
+        <span class="count-display" id="zoo-count">0 zoo visualizzati</span>
     </div>
 
-    <section class="zoo-stats">
-        <h2 style="margin-bottom: 25px; color: #2c3e50;">Zoo Famosi nel Mondo</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>🐘</h3>
-                <p><strong>Berlin Zoo</strong><br>Berlino, Germania</p>
-                <a href="https://www.google.com/maps/place/Zoologischer+Garten+Berlin/@52.5066,13.3345,15z" target="_blank" class="btn-view" style="margin-top: 10px;">Vedi mappa</a>
-            </div>
-            <div class="stat-card">
-                <h3>🦁</h3>
-                <p><strong>San Diego Zoo</strong><br>California, USA</p>
-                <a href="https://www.google.com/maps/place/San+Diego+Zoo/@32.7353,-117.1490,15z" target="_blank" class="btn-view" style="margin-top: 10px;">Vedi mappa</a>
-            </div>
-            <div class="stat-card">
-                <h3>🦒</h3>
-                <p><strong>Singapore Zoo</strong><br>Singapore</p>
-                <a href="https://www.google.com/maps/place/Singapore+Zoo/@1.4043,103.7930,15z" target="_blank" class="btn-view" style="margin-top: 10px;">Vedi mappa</a>
-            </div>
+    <div id="map"></div>
+
+    <section class="zoo-list">
+        <h2>🏛️ Zoo in Europa</h2>
+        <div class="zoo-grid" id="zoo-grid">
         </div>
     </section>
 
@@ -222,24 +231,297 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 FaunaView. Mappa fornita da Google Maps.</p>
+        <p>&copy; 2026 FaunaView. Mappa interattiva con Leaflet.js</p>
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        function searchOnMap() {
-            var query = document.getElementById('searchInput').value;
-            if(query.trim() !== '') {
-                var searchUrl = 'https://www.google.com/maps/search/' + encodeURIComponent(query + ' zoo') + '/';
-                window.open(searchUrl, '_blank');
+        var map = L.map('map').setView([50.0, 10.0], 4);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var zooIcon = L.divIcon({
+            className: 'custom-icon',
+            html: '<div style="font-size: 28px;">🦁</div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+        });
+
+        var safariIcon = L.divIcon({
+            className: 'custom-icon',
+            html: '<div style="font-size: 28px;">🦒</div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+        });
+
+        var aquariumIcon = L.divIcon({
+            className: 'custom-icon',
+            html: '<div style="font-size: 28px;">🐬</div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+        });
+
+        var parkIcon = L.divIcon({
+            className: 'custom-icon',
+            html: '<div style="font-size: 28px;">🌿</div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+        });
+
+        var zoos = [
+            // === ITALIA ===
+            {name: "Bioparco di Roma", country: "Italia", region: "europa", lat: 41.9198, lng: 12.4780, type: "zoo", icon: zooIcon},
+            {name: "Zoo Safari Ravenna", country: "Italia", region: "europa", lat: 44.3683, lng: 12.2719, type: "safari", icon: safariIcon},
+            {name: "Parco Natura Viva - Bussolengo", country: "Italia", region: "europa", lat: 45.4967, lng: 10.8647, type: "park", icon: parkIcon},
+            {name: "Zoom Torino", country: "Italia", region: "europa", lat: 44.9928, lng: 7.6178, type: "zoo", icon: zooIcon},
+            {name: "Acquario di Genova", country: "Italia", region: "europa", lat: 44.4075, lng: 8.9328, type: "aquarium", icon: aquariumIcon},
+            {name: "Oasi di Sant'Alessio", country: "Italia", region: "europa", lat: 45.2514, lng: 9.4289, type: "park", icon: parkIcon},
+            {name: "Faunistic Park Le Cornelle", country: "Italia", region: "europa", lat: 45.7247, lng: 9.5869, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Pistoia", country: "Italia", region: "europa", lat: 43.9586, lng: 10.9844, type: "zoo", icon: zooIcon},
+            {name: "Parco Falconiera - Aci Castello", country: "Italia", region: "europa", lat: 37.6039, lng: 15.1319, type: "zoo", icon: zooIcon},
+            {name: "Centro Tutela Fauna Selvatica - Semproniano", country: "Italia", region: "europa", lat: 42.5833, lng: 11.4833, type: "park", icon: parkIcon},
+
+            // === GERMANIA ===
+            {name: "Zoologischer Garten Berlin", country: "Germania", region: "europa", lat: 52.5066, lng: 13.3345, type: "zoo", icon: zooIcon},
+            {name: "Tierpark Berlin", country: "Germania", region: "europa", lat: 52.5142, lng: 13.5531, type: "zoo", icon: zooIcon},
+            {name: "Hagenbeck Zoo - Amburgo", country: "Germania", region: "europa", lat: 53.5961, lng: 9.9639, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Colonia", country: "Germania", region: "europa", lat: 50.9311, lng: 6.9583, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Monaco", country: "Germania", region: "europa", lat: 48.0928, lng: 11.5122, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Lipsia", country: "Germania", region: "europa", lat: 51.3386, lng: 12.3919, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Francoforte", country: "Germania", region: "europa", lat: 50.1222, lng: 8.6914, type: "zoo", icon: zooIcon},
+            {name: "Serengeti Park - Hodenhagen", country: "Germania", region: "europa", lat: 52.7736, lng: 9.5922, type: "safari", icon: safariIcon},
+            {name: "Erlebnis-Zoo Hannover", country: "Germania", region: "europa", lat: 52.3622, lng: 9.7292, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Stoccarda", country: "Germania", region: "europa", lat: 48.7767, lng: 9.1711, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Dresda", country: "Germania", region: "europa", lat: 51.0319, lng: 13.7428, type: "zoo", icon: zooIcon},
+            {name: "Aquarium Berlin", country: "Germania", region: "europa", lat: 52.5063, lng: 13.3372, type: "aquarium", icon: aquariumIcon},
+
+            // === FRANCIA ===
+            {name: "Zoo de Vincennes - Parigi", country: "Francia", region: "europa", lat: 48.8422, lng: 2.4133, type: "zoo", icon: zooIcon},
+            {name: "Parc Zoologique de Beauval", country: "Francia", region: "europa", lat: 47.2497, lng: 1.3550, type: "zoo", icon: zooIcon},
+            {name: "Zoo de La Fleche", country: "Francia", region: "europa", lat: 47.7008, lng: -0.0794, type: "zoo", icon: zooIcon},
+            {name: "Parc Asterix - Plailly", country: "Francia", region: "europa", lat: 49.1367, lng: 2.5739, type: "park", icon: parkIcon},
+            {name: "Oceanopolis - Brest", country: "Francia", region: "europa", lat: 48.3897, lng: -4.4867, type: "aquarium", icon: aquariumIcon},
+            {name: "Marineland Antibes", country: "Francia", region: "europa", lat: 43.6122, lng: 7.1244, type: "aquarium", icon: aquariumIcon},
+            {name: "Zoo de Lyon", country: "Francia", region: "europa", lat: 45.7283, lng: 4.8461, type: "zoo", icon: zooIcon},
+            {name: "Parc Animalier de Sainte-Croix", country: "Francia", region: "europa", lat: 48.9236, lng: 6.6817, type: "park", icon: parkIcon},
+            {name: "Réserve Africaine de Sigean", country: "Francia", region: "europa", lat: 43.1511, lng: 2.9628, type: "safari", icon: safariIcon},
+            {name: "Zoo de Pont-Scorff", country: "Francia", region: "europa", lat: 47.8519, lng: -3.4867, type: "zoo", icon: zooIcon},
+
+            // === REGNO UNITO ===
+            {name: "London Zoo", country: "UK", region: "europa", lat: 51.5356, lng: -0.1558, type: "zoo", icon: zooIcon},
+            {name: "Chester Zoo", country: "UK", region: "europa", lat: 53.2297, lng: -2.8792, type: "zoo", icon: zooIcon},
+            {name: "Edinburgh Zoo", country: "UK", region: "europa", lat: 55.9444, lng: -3.2806, type: "zoo", icon: zooIcon},
+            {name: "Blackpool Zoo", country: "UK", region: "europa", lat: 53.8078, lng: -3.0372, type: "zoo", icon: zooIcon},
+            {name: "Whipsnade Zoo", country: "UK", region: "europa", lat: 51.8486, lng: -0.5464, type: "zoo", icon: zooIcon},
+            {name: "Bristol Zoo Gardens", country: "UK", region: "europa", lat: 51.4714, lng: -2.6211, type: "zoo", icon: zooIcon},
+            {name: "Colchester Zoo", country: "UK", region: "europa", lat: 51.8703, lng: 0.8611, type: "zoo", icon: zooIcon},
+            {name: "Longleat Safari Park", country: "UK", region: "europa", lat: 51.1817, lng: -2.2547, type: "safari", icon: safariIcon},
+            {name: "Knowsley Safari Park", country: "UK", region: "europa", lat: 53.4478, lng: -2.8383, type: "safari", icon: safariIcon},
+            {name: "National Marine Aquarium - Plymouth", country: "UK", region: "europa", lat: 50.3681, lng: -4.1572, type: "aquarium", icon: aquariumIcon},
+
+            // === SPAGNA ===
+            {name: "Zoo de Madrid", country: "Spagna", region: "europa", lat: 40.4136, lng: -3.7369, type: "zoo", icon: zooIcon},
+            {name: "Zoo de Barcelona", country: "Spagna", region: "europa", lat: 41.3858, lng: 2.1533, type: "zoo", icon: zooIcon},
+            {name: "Loro Parque - Tenerife", country: "Spagna", region: "europa", lat: 28.4014, lng: -16.5683, type: "zoo", icon: zooIcon},
+            {name: "Siam Park - Tenerife", country: "Spagna", region: "europa", lat: 28.3211, lng: -16.6994, type: "park", icon: parkIcon},
+            {name: "Bioparc Valencia", country: "Spagna", region: "europa", lat: 39.4814, lng: -0.4086, type: "zoo", icon: zooIcon},
+            {name: "Zoo de Sevilla", country: "Spagna", region: "europa", lat: 37.4089, lng: -5.9936, type: "zoo", icon: zooIcon},
+            {name: "Selwo Aventura - Estepona", country: "Spagna", region: "europa", lat: 36.4111, lng: -5.1483, type: "safari", icon: safariIcon},
+            {name: "Oceanografic Valencia", country: "Spagna", region: "europa", lat: 39.4544, lng: -0.3506, type: "aquarium", icon: aquariumIcon},
+            {name: "Aquarium de Barcelona", country: "Spagna", region: "europa", lat: 41.3769, lng: 2.1831, type: "aquarium", icon: aquariumIcon},
+            {name: "Parque de la Naturaleza de Cabárceno", country: "Spagna", region: "europa", lat: 43.3503, lng: -3.8664, type: "park", icon: parkIcon},
+
+            // === OLANDA ===
+            {name: "Artis Royal Zoo - Amsterdam", country: "Olanda", region: "europa", lat: 52.3664, lng: 4.9169, type: "zoo", icon: zooIcon},
+            {name: "Diergaarde Blijdorp - Rotterdam", country: "Olanda", region: "europa", lat: 51.9267, lng: 4.4472, type: "zoo", icon: zooIcon},
+            {name: "Burgers' Zoo - Arnhem", country: "Olanda", region: "europa", lat: 52.0161, lng: 5.9061, type: "zoo", icon: zooIcon},
+            {name: "Apenheul - Apeldoorn", country: "Olanda", region: "europa", lat: 52.2031, lng: 5.9319, type: "zoo", icon: zooIcon},
+            {name: "Safaripark Beekse Bergen", country: "Olanda", region: "europa", lat: 51.5211, lng: 5.1028, type: "safari", icon: safariIcon},
+
+            // === BELGIO ===
+            {name: "Zoo di Anversa", country: "Belgio", region: "europa", lat: 51.2208, lng: 4.4189, type: "zoo", icon: zooIcon},
+            {name: "Pairi Daiza - Brugelette", country: "Belgio", region: "europa", lat: 50.5792, lng: 3.8525, type: "zoo", icon: zooIcon},
+            {name: "Planckendael - Muizen", country: "Belgio", region: "europa", lat: 51.0156, lng: 4.6314, type: "zoo", icon: zooIcon},
+
+            // === AUSTRIA ===
+            {name: "Tiergarten Schonbrunn - Vienna", country: "Austria", region: "europa", lat: 48.1825, lng: 16.3067, type: "zoo", icon: zooIcon},
+            {name: "Haus des Meeres - Vienna", country: "Austria", region: "europa", lat: 48.1936, lng: 16.3558, type: "aquarium", icon: aquariumIcon},
+            {name: "Zoo Salzburg", country: "Austria", region: "europa", lat: 47.8017, lng: 13.0183, type: "zoo", icon: zooIcon},
+
+            // === SVIZZERA ===
+            {name: "Zoo di Zurigo", country: "Svizzera", region: "europa", lat: 47.3814, lng: 8.5733, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Basilea", country: "Svizzera", region: "europa", lat: 47.5478, lng: 7.5844, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Berna", country: "Svizzera", region: "europa", lat: 46.9511, lng: 7.4483, type: "zoo", icon: zooIcon},
+
+            // === REPUBBLICA CECA ===
+            {name: "Zoo di Praga", country: "Repubblica Ceca", region: "europa", lat: 50.1211, lng: 14.4053, type: "zoo", icon: zooIcon},
+            {name: "Zoo Brno", country: "Repubblica Ceca", region: "europa", lat: 49.2314, lng: 16.6906, type: "zoo", icon: zooIcon},
+            {name: "Zoo Liberec", country: "Repubblica Ceca", region: "europa", lat: 50.7617, lng: 15.0408, type: "zoo", icon: zooIcon},
+
+            // === POLONIA ===
+            {name: "Zoo di Varsavia", country: "Polonia", region: "europa", lat: 52.2778, lng: 21.0206, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Cracovia", country: "Polonia", region: "europa", lat: 50.0217, lng: 19.8953, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Wroclaw", country: "Polonia", region: "europa", lat: 51.1136, lng: 17.0608, type: "zoo", icon: zooIcon},
+            {name: "Zoo di Poznan", country: "Polonia", region: "europa", lat: 52.4253, lng: 16.9128, type: "zoo", icon: zooIcon},
+
+            // === SVEZIA ===
+            {name: "Skansen - Stoccolma", country: "Svezia", region: "europa", lat: 59.3244, lng: 18.1025, type: "zoo", icon: zooIcon},
+            {name: "Kolmarden Wildlife Park", country: "Svezia", region: "europa", lat: 58.7108, lng: 16.2214, type: "park", icon: parkIcon},
+            {name: "Gothenburg Zoo", country: "Svezia", region: "europa", lat: 57.7072, lng: 11.9842, type: "zoo", icon: zooIcon},
+
+            // === DANIMARCA ===
+            {name: "Copenhagen Zoo", country: "Danimarca", region: "europa", lat: 55.6708, lng: 12.5261, type: "zoo", icon: zooIcon},
+            {name: "Givskud Zoo", country: "Danimarca", region: "europa", lat: 55.8208, lng: 9.3633, type: "safari", icon: safariIcon},
+            {name: "Aalborg Zoo", country: "Danimarca", region: "europa", lat: 57.0478, lng: 10.0022, type: "zoo", icon: zooIcon},
+            {name: "Den Blå Planet - Copenhagen", country: "Danimarca", region: "europa", lat: 55.6953, lng: 12.5978, type: "aquarium", icon: aquariumIcon},
+
+            // === PORTOGALLO ===
+            {name: "Zoo de Lisboa", country: "Portogallo", region: "europa", lat: 38.7478, lng: -9.1683, type: "zoo", icon: zooIcon},
+            {name: "Oceanario de Lisboa", country: "Portogallo", region: "europa", lat: 38.7642, lng: -9.0953, type: "aquarium", icon: aquariumIcon},
+            {name: "Zoomarine - Algarve", country: "Portogallo", region: "europa", lat: 37.1289, lng: -8.3411, type: "park", icon: parkIcon},
+
+            // === UNGHERIA ===
+            {name: "Budapest Zoo", country: "Ungheria", region: "europa", lat: 47.5142, lng: 19.0847, type: "zoo", icon: zooIcon},
+            {name: "Tropicarium - Budapest", country: "Ungheria", region: "europa", lat: 47.4756, lng: 19.0556, type: "aquarium", icon: aquariumIcon},
+
+            // === IRLANDA ===
+            {name: "Dublin Zoo", country: "Irlanda", region: "europa", lat: 53.3594, lng: -6.3156, type: "zoo", icon: zooIcon},
+            {name: "Fota Wildlife Park - Cork", country: "Irlanda", region: "europa", lat: 51.8897, lng: -8.3036, type: "park", icon: parkIcon},
+
+            // === BELGIO ===
+            {name: "Bellewaerde", country: "Belgio", region: "europa", lat: 50.8450, lng: 2.9550, type: "park", icon: parkIcon},
+
+            // === GRECIA ===
+            {name: "Attica Zoological Park - Atene", country: "Grecia", region: "europa", lat: 38.0422, lng: 23.8692, type: "zoo", icon: zooIcon},
+
+            // === FINLANDIA ===
+            {name: "Helsinki Zoo", country: "Finlandia", region: "europa", lat: 60.1792, lng: 24.9836, type: "zoo", icon: zooIcon},
+            {name: "Ranua Wildlife Park", country: "Finlandia", region: "europa", lat: 65.9250, lng: 26.5031, type: "zoo", icon: zooIcon},
+
+            // === NORVEGIA ===
+            {name: "Oslo Reptilpark", country: "Norvegia", region: "europa", lat: 59.9139, lng: 10.7522, type: "zoo", icon: zooIcon},
+            {name: "Bergen Aquarium", country: "Norvegia", region: "europa", lat: 60.3958, lng: 5.3072, type: "aquarium", icon: aquariumIcon},
+
+            // === CROAZIA ===
+            {name: "Zagreb Zoo", country: "Croazia", region: "europa", lat: 45.8142, lng: 16.0189, type: "zoo", icon: zooIcon},
+
+            // === ROMANIA ===
+            {name: "Zoo Bucarest", country: "Romania", region: "europa", lat: 44.4342, lng: 26.1053, type: "zoo", icon: zooIcon},
+
+            // === SLOVACCHIA ===
+            {name: "Zoo Bojnice", country: "Slovacchia", region: "europa", lat: 48.7794, lng: 18.5942, type: "zoo", icon: zooIcon},
+            {name: "Zoo Bratislava", country: "Slovacchia", region: "europa", lat: 48.1567, lng: 17.0944, type: "zoo", icon: zooIcon},
+
+            // === RUSSIA ===
+            {name: "Moscow Zoo", country: "Russia", region: "europa", lat: 55.7614, lng: 37.6183, type: "zoo", icon: zooIcon},
+            {name: "Leningrad Zoo - San Pietroburgo", country: "Russia", region: "europa", lat: 59.9450, lng: 30.3031, type: "zoo", icon: zooIcon}
+        ];
+
+        var markers = [];
+        var currentFilter = 'all';
+
+        function addMarkers(filterType) {
+            markers.forEach(function(m) { map.removeLayer(m); });
+            markers = [];
+
+            var filteredZoos = zoos.filter(function(zoo) {
+                if (filterType === 'all') return true;
+                if (filterType === 'europa') return zoo.region === 'europa';
+                return zoo.country.toLowerCase().includes(filterType);
+            });
+
+            filteredZoos.forEach(function(zoo) {
+                var marker = L.marker([zoo.lat, zoo.lng], {icon: zoo.icon})
+                    .addTo(map)
+                    .bindPopup(
+                        '<h4>' + zoo.name + '</h4>' +
+                        '<p><strong>' + zoo.country + '</strong></p>' +
+                        '<p>Tipo: ' + zoo.type + '</p>' +
+                        '<a href="https://www.google.com/maps/search/' + encodeURIComponent(zoo.name) + '" target="_blank">Apri in Google Maps</a>'
+                    );
+                markers.push(marker);
+            });
+
+            document.getElementById('zoo-count').textContent = filteredZoos.length + ' zoo visualizzati';
+            updateZooGrid(filteredZoos);
+        }
+
+        function updateZooGrid(filteredZoos) {
+            var grid = document.getElementById('zoo-grid');
+            grid.innerHTML = '';
+
+            filteredZoos.forEach(function(zoo) {
+                var card = document.createElement('div');
+                card.className = 'zoo-card';
+                card.innerHTML = 
+                    '<h3>' + zoo.name + '</h3>' +
+                    '<div class="country">' + zoo.country + '</div>' +
+                    '<span class="type">' + zoo.type + '</span><br>' +
+                    '<a href="https://www.google.com/maps/search/' + encodeURIComponent(zoo.name) + '" target="_blank" class="btn-view">📍 Vedi mappa</a>';
+                grid.appendChild(card);
+            });
+        }
+
+        function filterZoos(filterType) {
+            currentFilter = filterType;
+            
+            document.querySelectorAll('.filter-bar button').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            document.getElementById('btn-' + filterType).classList.add('active');
+
+            addMarkers(filterType);
+
+            if (filterType === 'italia') {
+                map.setView([42.5, 12.5], 6);
+            } else if (filterType === 'germania') {
+                map.setView([51.0, 10.0], 6);
+            } else if (filterType === 'francia') {
+                map.setView([46.5, 2.0], 6);
+            } else if (filterType === 'uk') {
+                map.setView([54.0, -2.0], 6);
+            } else if (filterType === 'spagna') {
+                map.setView([40.0, -3.0], 6);
+            } else if (filterType === 'europa') {
+                map.setView([50.0, 10.0], 4);
+            } else {
+                map.setView([50.0, 10.0], 4);
             }
         }
 
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if(e.key === 'Enter') {
-                searchOnMap();
-            }
-        });
-    </script>
+        function searchZoos() {
+            var query = document.getElementById('searchInput').value.toLowerCase();
+            
+            markers.forEach(function(m) { map.removeLayer(m); });
+            markers = [];
 
+            var filteredZoos = zoos.filter(function(zoo) {
+                return zoo.name.toLowerCase().includes(query) || zoo.country.toLowerCase().includes(query);
+            });
+
+            filteredZoos.forEach(function(zoo) {
+                var marker = L.marker([zoo.lat, zoo.lng], {icon: zoo.icon})
+                    .addTo(map)
+                    .bindPopup(
+                        '<h4>' + zoo.name + '</h4>' +
+                        '<p><strong>' + zoo.country + '</strong></p>' +
+                        '<p>Tipo: ' + zoo.type + '</p>' +
+                        '<a href="https://www.google.com/maps/search/' + encodeURIComponent(zoo.name) + '" target="_blank">Apri in Google Maps</a>'
+                    );
+                markers.push(marker);
+            });
+
+            document.getElementById('zoo-count').textContent = filteredZoos.length + ' zoo visualizzati';
+            updateZooGrid(filteredZoos);
+
+            if (filteredZoos.length === 1) {
+                map.setView([filteredZoos[0].lat, filteredZoos[0].lng], 10);
+            }
+        }
+
+        addMarkers('all');
+    </script>
 </body>
 </html>
