@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elettromagnetismo - Fisica</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+        }
+        header {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #00d9ff;
+        }
+        h1 { color: #00d9ff; font-size: 2.5em; margin-bottom: 10px; }
+        .back { 
+            display: inline-block;
+            color: #fff;
+            text-decoration: none;
+            margin-top: 10px;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+        }
+        .back:hover { background: rgba(255,255,255,0.2); }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        section {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 4px solid #00d9ff;
+        }
+        h2 { color: #00d9ff; margin-bottom: 15px; }
+        h3 { color: #ff6b6b; margin: 20px 0 10px; }
+        p { line-height: 1.8; margin-bottom: 15px; }
+        .formula {
+            background: rgba(0,217,255,0.15);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.5em;
+            font-family: 'Courier New', monospace;
+        }
+        .component {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .component h4 { color: #ffa502; margin-bottom: 8px; }
+        ul { margin-left: 20px; line-height: 2; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Elettromagnetismo</h1>
+        <p>Elettricità, magnetismo e onde</p>
+        <a href="index.html" class="back">← Torna alla Home</a>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>Cos'è l'Elettromagnetismo?</h2>
+            <p>L'elettromagnetismo studia l'interazione tra cariche elettriche e campi magnetici. 
+            Unifica elettricità e magnetismo in un'unica teoria, fondamentale per tutta la tecnologia moderna.</p>
+        </section>
+
+        <section>
+            <h2>Elettrostatica</h2>
+            
+            <h3>Legge di Coulomb</h3>
+            <p>La forza tra due cariche è direttamente proporzionale al prodotto delle cariche 
+            e inversamente proporzionale al quadrato della distanza.</p>
+            <div class="formula">F = k × (q₁ × q₂) / r²</div>
+            <p>k = 9×10⁹ N·m²/C² (costante di Coulomb)</p>
+
+            <h3>Legge di Ohm</h3>
+            <div class="formula">V = R × I</div>
+            <p>V = tensione (Volt), R = resistenza (Ohm), I = corrente (Ampere)</p>
+
+            <div class="component">
+                <h4>Resistenza</h4>
+                <p>R = ρ × L / A</p>
+                <p>ρ = resistività, L = lunghezza, A = sezione</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Circuiti Elettrici</h2>
+            
+            <h3>Resistenze in Serie</h3>
+            <div class="formula">Rₜ = R₁ + R₂ + R₃ + ...</div>
+            
+            <h3>Resistenze in Parallelo</h3>
+            <div class="formula">1/Rₜ = 1/R₁ + 1/R₂ + 1/R₃ + ...</div>
+
+            <h3>Potenza Elettrica</h3>
+            <div class="formula">P = V × I = I²R = V²/R</div>
+            <p>P = potenza (Watt)</p>
+        </section>
+
+        <section>
+            <h2>Magnetismo</h2>
+            <p>I campi magnetici sono generati da cariche in movimento (correnti elettriche).</p>
+            
+            <h3>Forza di Lorentz</h3>
+            <div class="formula">F = q × v × B</div>
+            <p>Forza su una carica in moto in un campo magnetico</p>
+
+            <h3>Induzione Elettromagnetica</h3>
+            <p>Un campo magnetico variabile genera una forza elettromotrice.</p>
+            <div class="formula">ε = -ΔΦ/Δt</div>
+            <p>Legge di Faraday-Lenz</p>
+        </section>
+
+        <section>
+            <h2>Onde Elettromagnetiche</h2>
+            <p>Le onde EM sono oscillazioni dei campi elettrici e magnetici che si propagano nel vuoto 
+            alla velocità della luce (c ≈ 3×10⁸ m/s).</p>
+            <div class="formula">c = λ × f</div>
+            <p>λ = lunghezza d'onda, f = frequenza</p>
+
+            <h3>Spettro Elettromagnetico</h3>
+            <ul>
+                <li>Onde radio (> 1m)</li>
+                <li>Microonde (1mm - 1m)</li>
+                <li>Infrarossi (700nm - 1mm)</li>
+                <li>Luce visibile (400nm - 700nm)</li>
+                <li>Ultravioletti (10nm - 400nm)</li>
+                <li>Raggi X (0.01nm - 10nm)</li>
+                <li>Raggi gamma (< 0.01nm)</li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>

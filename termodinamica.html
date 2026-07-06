@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termodinamica - Fisica</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+        }
+        header {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #ffa502;
+        }
+        h1 { color: #ffa502; font-size: 2.5em; margin-bottom: 10px; }
+        .back { 
+            display: inline-block;
+            color: #fff;
+            text-decoration: none;
+            margin-top: 10px;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+        }
+        .back:hover { background: rgba(255,255,255,0.2); }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        section {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 4px solid #ffa502;
+        }
+        h2 { color: #ffa502; margin-bottom: 15px; }
+        h3 { color: #ff6b6b; margin: 20px 0 10px; }
+        p { line-height: 1.8; margin-bottom: 15px; }
+        .formula {
+            background: rgba(255,165,2,0.15);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.5em;
+            font-family: 'Courier New', monospace;
+        }
+        .law {
+            background: rgba(255,107,107,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .law h4 { color: #ff6b6b; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 2; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Termodinamica</h1>
+        <p>Lo studio del calore e dell'energia</p>
+        <a href="index.html" class="back">← Torna alla Home</a>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>Cos'è la Termodinamica?</h2>
+            <p>La termodinamica studia le trasformazioni energetiche, il calore e le loro relazioni con le proprietà della materia. 
+            È fondamentale per capire motori, refrigerazione e processi chimici.</p>
+        </section>
+
+        <section>
+            <h2>I Quattro Principi della Termodinamica</h2>
+            
+            <div class="law">
+                <h4>Principio Zero</h4>
+                <p>Se due sistemi sono in equilibrio termico con un terzo, sono in equilibrio tra loro. 
+                Definisce il concetto di temperatura.</p>
+            </div>
+
+            <div class="law">
+                <h4>Primo Principio</h4>
+                <p>L'energia non può essere creata né distrutta, solo trasformata. 
+                La variazione di energia interna uguaglia il calore meno il lavoro.</p>
+                <div class="formula">ΔU = Q - L</div>
+            </div>
+
+            <div class="law">
+                <h4>Secondo Principio</h4>
+                <p>Il calore fluisce spontaneamente da un corpo caldo a uno freddo, mai il contrario. 
+                Introduce il concetto di entropia.</p>
+                <div class="formula">ΔS ≥ 0</div>
+                <p>L'entropia dell'universo tende sempre ad aumentare.</p>
+            </div>
+
+            <div class="law">
+                <h4>Terzo Principio</h4>
+                <p>È impossibile raggiungere lo zero assoluto (0 K = -273.15°C).</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Formule Fondamentali</h2>
+            
+            <h3>Calore Specifico</h3>
+            <div class="formula">Q = m × c × ΔT</div>
+            <p>Q = calore (J), m = massa (kg), c = calore specifico (J/kg·K), ΔT = variazione temperatura</p>
+
+            <h3>Lavoro di un Gas</h3>
+            <div class="formula">L = P × ΔV</div>
+            <p>L = lavoro (J), P = pressione (Pa), ΔV = variazione volume (m³)</p>
+
+            <h3>Equazione di Stato dei Gas Perfetti</h3>
+            <div class="formula">P × V = n × R × T</div>
+            <p>R = 8.314 J/(mol·K) - Costante universale dei gas</p>
+        </section>
+
+        <section>
+            <h2>Scale di Temperatura</h2>
+            <ul>
+                <li><strong>Celsius (°C):</strong> 0°C = punto congelamento acqua, 100°C = ebollizione</li>
+                <li><strong>Kelvin (K):</strong> Scala assoluta, 0 K = zero assoluto</li>
+                <li><strong>Fahrenheit (°F):</strong> Usata principalmente negli USA</li>
+            </ul>
+            <div class="formula">T(K) = T(°C) + 273.15</div>
+        </section>
+    </div>
+</body>
+</html>

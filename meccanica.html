@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meccanica - Fisica</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+        }
+        header {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #ff6b6b;
+        }
+        h1 { color: #ff6b6b; font-size: 2.5em; margin-bottom: 10px; }
+        .back { 
+            display: inline-block;
+            color: #fff;
+            text-decoration: none;
+            margin-top: 10px;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+        }
+        .back:hover { background: rgba(255,255,255,0.2); }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        section {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 4px solid #ff6b6b;
+        }
+        h2 { color: #ff6b6b; margin-bottom: 15px; }
+        h3 { color: #ffa502; margin: 20px 0 10px; }
+        p { line-height: 1.8; margin-bottom: 15px; }
+        .formula {
+            background: rgba(255,107,107,0.15);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.5em;
+            font-family: 'Courier New', monospace;
+        }
+        .example {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .example h4 { color: #ffa502; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 2; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Meccanica</h1>
+        <p>Lo studio del movimento e delle forze</p>
+        <a href="index.html" class="back">← Torna alla Home</a>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>Cos'è la Meccanica?</h2>
+            <p>La meccanica è il ramo della fisica che studia il movimento dei corpi e le cause che lo producono. 
+            Si divide in cinematica (descrizione del movimento) e dinamica (cause del movimento).</p>
+        </section>
+
+        <section>
+            <h2>I Tre Principi di Newton</h2>
+            
+            <h3>Primo Principio (Principio di Inerzia)</h3>
+            <p>Un corpo rimane in stato di quiete o di moto rettilineo uniforme a meno che non agisca su di esso una forza esterna.</p>
+            
+            <h3>Secondo Principio (F = ma)</h3>
+            <p>L'accelerazione di un corpo è direttamente proporzionale alla forza applicata e inversamente proporzionale alla sua massa.</p>
+            <div class="formula">F = m × a</div>
+            <p>Dove: F = forza (Newton), m = massa (kg), a = accelerazione (m/s²)</p>
+
+            <div class="example">
+                <h4>Esempio</h4>
+                <p>Un'auto di 1000 kg accelera a 2 m/s². Quale forza serve?</p>
+                <p>F = 1000 kg × 2 m/s² = 2000 N</p>
+            </div>
+
+            <h3>Terzo Principio (Azione e Reazione)</h3>
+            <p>Per ogni azione esiste una reazione uguale e contraria.</p>
+        </section>
+
+        <section>
+            <h2>Formule Fondamentali</h2>
+            
+            <h3>Velocità</h3>
+            <div class="formula">v = Δs / Δt</div>
+            <p>velocità = spazio percorso / tempo</p>
+
+            <h3>Accelerazione</h3>
+            <div class="formula">a = Δv / Δt</div>
+            <p>accelerazione = variazione velocità / tempo</p>
+
+            <h3>Moto Rettilineo Uniforme</h3>
+            <div class="formula">s = v × t</div>
+
+            <h3>Moto Uniformemente Accelerato</h3>
+            <div class="formula">s = v₀t + ½at²</div>
+        </section>
+
+        <section>
+            <h2>Tipi di Forze</h2>
+            <ul>
+                <li><strong>Forza peso:</strong> P = m × g (g ≈ 9.81 m/s²)</li>
+                <li><strong>Forza elastica:</strong> F = k × x (Legge di Hooke)</li>
+                <li><strong>Forza centripeta:</strong> F = mv²/r</li>
+                <li><strong>Attrito:</strong> F = μ × N</li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>
